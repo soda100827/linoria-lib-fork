@@ -1867,7 +1867,12 @@ do
 			BorderColor3 = "OutlineColor",
 		})
 
-		Library:OnHighlight(TextBoxOuter, TextBoxOuter, { BorderColor3 = "AccentColor" }, { BorderColor3 = "Black" })
+		Library:OnHighlight(
+			TextBoxOuter,
+			TextBoxOuter,
+			{ BorderColor3 = "AccentColor" },
+			{ BorderColor3 = "OutlineColor" }
+		)
 
 		if type(Info.Tooltip) == "string" then
 			Library:AddToolTip(Info.Tooltip, TextBoxOuter)
@@ -2038,7 +2043,7 @@ do
 		})
 
 		Library:AddToRegistry(ToggleOuter, {
-			BorderColor3 = "Black",
+			BorderColor3 = "OutlineColor",
 		})
 
 		local ToggleInner = Library:Create("Frame", {
@@ -2081,7 +2086,12 @@ do
 			Parent = ToggleOuter,
 		})
 
-		Library:OnHighlight(ToggleRegion, ToggleOuter, { BorderColor3 = "AccentColor" }, { BorderColor3 = "Black" })
+		Library:OnHighlight(
+			ToggleRegion,
+			ToggleOuter,
+			{ BorderColor3 = "AccentColor" },
+			{ BorderColor3 = "OutlineColor" }
+		)
 
 		function Toggle:UpdateColors()
 			Toggle:Display()
@@ -2201,7 +2211,7 @@ do
 		})
 
 		Library:AddToRegistry(SliderOuter, {
-			BorderColor3 = "Black",
+			BorderColor3 = "OutlineColor",
 		})
 
 		local SliderInner = Library:Create("Frame", {
@@ -2242,7 +2252,12 @@ do
 			Parent = SliderInner,
 		})
 
-		Library:OnHighlight(SliderOuter, SliderOuter, { BorderColor3 = "AccentColor" }, { BorderColor3 = "Black" })
+		Library:OnHighlight(
+			SliderOuter,
+			SliderOuter,
+			{ BorderColor3 = "AccentColor" },
+			{ BorderColor3 = "OutlineColor" }
+		)
 
 		if type(Info.Tooltip) == "string" then
 			Library:AddToolTip(Info.Tooltip, SliderOuter)
@@ -2457,7 +2472,12 @@ do
 			Parent = DropdownInner,
 		})
 
-		Library:OnHighlight(DropdownOuter, DropdownOuter, { BorderColor3 = "AccentColor" }, { BorderColor3 = "Black" })
+		Library:OnHighlight(
+			DropdownOuter,
+			DropdownOuter,
+			{ BorderColor3 = "AccentColor" },
+			{ BorderColor3 = "OutlineColor" }
+		)
 
 		if type(Info.Tooltip) == "string" then
 			Library:AddToolTip(Info.Tooltip, DropdownOuter)
@@ -2471,6 +2491,7 @@ do
 			BorderSizePixel = 0,
 			ZIndex = 20,
 			Visible = false,
+			ClipsDescendants = true,
 			Parent = ScreenGui,
 		})
 
@@ -3372,6 +3393,21 @@ function Library:CreateWindow(...)
 			Parent = TabArea,
 		})
 
+		Library:AddRoundedCorner(TabButton, 6)
+
+		local TabButtonMask = Library:Create("Frame", {
+			BackgroundColor3 = Library.BackgroundColor,
+			BorderSizePixel = 0,
+			Position = UDim2.new(0, 0, 0.5, 0),
+			Size = UDim2.new(1, 0, 0.5, 0),
+			ZIndex = 1,
+			Parent = TabButton,
+		})
+
+		Library:AddToRegistry(TabButtonMask, {
+			BackgroundColor3 = "BackgroundColor",
+		})
+
 		Library:AddToRegistry(TabButton, {
 			BackgroundColor3 = "BackgroundColor",
 		})
@@ -3463,16 +3499,20 @@ function Library:CreateWindow(...)
 
 			Library:Tween(Blocker, { BackgroundTransparency = 0 }, 0.2)
 			Library:Tween(TabButton, { BackgroundColor3 = Library.MainColor }, 0.2)
+			Library:Tween(TabButtonMask, { BackgroundColor3 = Library.MainColor }, 0.2)
 
 			Library.RegistryMap[TabButton].Properties.BackgroundColor3 = "MainColor"
+			Library.RegistryMap[TabButtonMask].Properties.BackgroundColor3 = "MainColor"
 			TabFrame.Visible = true
 		end
 
 		function Tab:HideTab()
 			Library:Tween(Blocker, { BackgroundTransparency = 1 }, 0.2)
 			Library:Tween(TabButton, { BackgroundColor3 = Library.BackgroundColor }, 0.2)
+			Library:Tween(TabButtonMask, { BackgroundColor3 = Library.BackgroundColor }, 0.2)
 
 			Library.RegistryMap[TabButton].Properties.BackgroundColor3 = "BackgroundColor"
+			Library.RegistryMap[TabButtonMask].Properties.BackgroundColor3 = "BackgroundColor"
 			TabFrame.Visible = false
 		end
 
@@ -3493,9 +3533,16 @@ function Library:CreateWindow(...)
 				Parent = Info.Side == 1 and LeftSide or RightSide,
 			})
 
-			Library:AddRoundedCorner(BoxOuter)
+			Library:AddStroke(BoxOuter, {
+				Color = Library.OutlineColor,
+				Thickness = 1,
+			}, {
+				Color = "OutlineColor",
+			})
+
 			Library:AddToRegistry(BoxOuter, {
 				BackgroundColor3 = "BackgroundColor",
+				BorderColor3 = "OutlineColor",
 			})
 
 			local BoxInner = Library:Create("Frame", {
