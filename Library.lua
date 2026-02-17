@@ -37,7 +37,7 @@ local Library = {
 	RiskColor = Color3.fromRGB(255, 50, 50),
 
 	Black = Color3.new(0, 0, 0),
-	Font = Enum.Font.Code,
+	Font = Enum.Font.Ubuntu,
 
 	OpenedFrames = {},
 	DependencyBoxes = {},
@@ -1837,6 +1837,7 @@ do
 
 		local TextBoxOuter = Library:Create("Frame", {
 			BackgroundColor3 = Color3.new(0, 0, 0),
+			BackgroundTransparency = 1,
 			BorderSizePixel = 0,
 			Size = UDim2.new(1, -4, 0, 20),
 			ZIndex = 5,
@@ -2021,6 +2022,7 @@ do
 
 		local ToggleOuter = Library:Create("Frame", {
 			BackgroundColor3 = Color3.new(0, 0, 0),
+			BackgroundTransparency = 1,
 			BorderSizePixel = 0,
 			Size = UDim2.new(0, 13, 0, 13),
 			ZIndex = 5,
@@ -2183,6 +2185,7 @@ do
 
 		local SliderOuter = Library:Create("Frame", {
 			BackgroundColor3 = Color3.new(0, 0, 0),
+			BackgroundTransparency = 1,
 			BorderSizePixel = 0,
 			Size = UDim2.new(1, -4, 0, 13),
 			ZIndex = 5,
@@ -2390,6 +2393,7 @@ do
 
 		local DropdownOuter = Library:Create("Frame", {
 			BackgroundColor3 = Color3.new(0, 0, 0),
+			BackgroundTransparency = 1,
 			BorderSizePixel = 0,
 			Size = UDim2.new(1, -4, 0, 20),
 			ZIndex = 5,
@@ -2463,6 +2467,7 @@ do
 
 		local ListOuter = Library:Create("Frame", {
 			BackgroundColor3 = Color3.new(0, 0, 0),
+			BackgroundTransparency = 1,
 			BorderSizePixel = 0,
 			ZIndex = 20,
 			Visible = false,
@@ -2922,6 +2927,7 @@ do
 
 	local WatermarkOuter = Library:Create("Frame", {
 		BackgroundColor3 = Color3.new(0, 0, 0),
+		BackgroundTransparency = 1,
 		BorderSizePixel = 0,
 		Position = UDim2.new(0, 100, 0, -25),
 		Size = UDim2.new(0, 213, 0, 20),
@@ -2992,6 +2998,7 @@ do
 	local KeybindOuter = Library:Create("Frame", {
 		AnchorPoint = Vector2.new(0, 0.5),
 		BackgroundColor3 = Color3.new(0, 0, 0),
+		BackgroundTransparency = 1,
 		BorderSizePixel = 0,
 		Position = UDim2.new(0, 10, 0.5, 0),
 		Size = UDim2.new(0, 210, 0, 20),
@@ -3105,6 +3112,7 @@ function Library:Notify(Text, Time)
 
 	local NotifyOuter = Library:Create("Frame", {
 		BackgroundColor3 = Color3.new(0, 0, 0),
+		BackgroundTransparency = 1,
 		BorderSizePixel = 0,
 		Position = UDim2.new(0, 100, 0, 10),
 		Size = UDim2.new(0, 0, 0, YSize),
@@ -3239,6 +3247,7 @@ function Library:CreateWindow(...)
 	local Outer = Library:Create("Frame", {
 		AnchorPoint = Config.AnchorPoint,
 		BackgroundColor3 = Color3.new(0, 0, 0),
+		BackgroundTransparency = 1,
 		BorderSizePixel = 0,
 		Position = Config.Position,
 		Size = Config.Size,
@@ -3379,7 +3388,6 @@ function Library:CreateWindow(...)
 			Parent = TabArea,
 		})
 
-		Library:AddRoundedCorner(TabButton, 6)
 		Library:AddStroke(TabButton, {
 			Color = Library.OutlineColor,
 			Thickness = 1,
@@ -3502,6 +3510,7 @@ function Library:CreateWindow(...)
 
 			local BoxOuter = Library:Create("Frame", {
 				BackgroundColor3 = Library.BackgroundColor,
+				BackgroundTransparency = 1,
 				BorderSizePixel = 0,
 				Size = UDim2.new(1, 0, 0, 507 + 2),
 				ZIndex = 2,
