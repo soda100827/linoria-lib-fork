@@ -3304,13 +3304,6 @@ function Library:CreateWindow(...)
 	})
 
 	Library:AddRoundedCorner(MainSectionOuter)
-	Library:AddStroke(MainSectionOuter, {
-		Color = Library.OutlineColor,
-		Thickness = 1,
-	}, {
-		Color = "OutlineColor",
-	})
-
 	Library:AddToRegistry(MainSectionOuter, {
 		BackgroundColor3 = "BackgroundColor",
 		BorderColor3 = "OutlineColor",
@@ -3349,23 +3342,14 @@ function Library:CreateWindow(...)
 	local TabContainer = Library:Create("Frame", {
 		BackgroundColor3 = Library.MainColor,
 		BorderSizePixel = 0,
-		Position = UDim2.new(0, 8, 0, 30),
-		Size = UDim2.new(1, -16, 1, -38),
+		Position = UDim2.new(0, 8, 0, 29),
+		Size = UDim2.new(1, -16, 1, -37),
 		ZIndex = 2,
 		Parent = MainSectionInner,
 	})
 
-	Library:AddRoundedCorner(TabContainer)
-	Library:AddStroke(TabContainer, {
-		Color = Library.OutlineColor,
-		Thickness = 1,
-	}, {
-		Color = "OutlineColor",
-	})
-
 	Library:AddToRegistry(TabContainer, {
 		BackgroundColor3 = "MainColor",
-		BorderColor3 = "OutlineColor",
 	})
 
 	function Window:SetWindowTitle(Title)
@@ -3388,16 +3372,8 @@ function Library:CreateWindow(...)
 			Parent = TabArea,
 		})
 
-		Library:AddStroke(TabButton, {
-			Color = Library.OutlineColor,
-			Thickness = 1,
-		}, {
-			Color = "OutlineColor",
-		})
-
 		Library:AddToRegistry(TabButton, {
 			BackgroundColor3 = "BackgroundColor",
-			BorderColor3 = "OutlineColor",
 		})
 
 		local TabButtonLabel = Library:CreateLabel({
@@ -3518,16 +3494,8 @@ function Library:CreateWindow(...)
 			})
 
 			Library:AddRoundedCorner(BoxOuter)
-			Library:AddStroke(BoxOuter, {
-				Color = Library.OutlineColor,
-				Thickness = 1,
-			}, {
-				Color = "OutlineColor",
-			})
-
 			Library:AddToRegistry(BoxOuter, {
 				BackgroundColor3 = "BackgroundColor",
-				BorderColor3 = "OutlineColor",
 			})
 
 			local BoxInner = Library:Create("Frame", {
@@ -3627,16 +3595,8 @@ function Library:CreateWindow(...)
 			})
 
 			Library:AddRoundedCorner(BoxOuter)
-			Library:AddStroke(BoxOuter, {
-				Color = Library.OutlineColor,
-				Thickness = 1,
-			}, {
-				Color = "OutlineColor",
-			})
-
 			Library:AddToRegistry(BoxOuter, {
 				BackgroundColor3 = "BackgroundColor",
-				BorderColor3 = "OutlineColor",
 			})
 
 			local BoxInner = Library:Create("Frame", {
