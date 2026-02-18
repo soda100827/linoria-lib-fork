@@ -3130,6 +3130,7 @@ function Library:CreateWindow(...)
         Position = UDim2.new(0, 8, 0, 30);
         Size = UDim2.new(1, -16, 1, -38);
         ZIndex = 2;
+        RoundCorners = true;
         Parent = MainSectionInner;
     });
     
