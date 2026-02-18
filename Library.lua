@@ -2555,6 +2555,14 @@ do
 			ScrollBarImageColor3 = "AccentColor",
 		})
 
+		local function GetDropdownListHeight()
+			return math.clamp(Scrolling.CanvasSize.Y.Offset - 1, 0, MAX_DROPDOWN_ITEMS * 20) + 1
+		end
+
+		DropdownOuter:GetPropertyChangedSignal("AbsoluteSize"):Connect(function()
+			RecalculateListSize(GetDropdownListHeight())
+		end)
+
 		Library:Create("UIListLayout", {
 			Padding = UDim.new(0, 0),
 			FillDirection = Enum.FillDirection.Vertical,
@@ -2724,8 +2732,11 @@ do
 		end
 
 		function Dropdown:OpenDropdown()
+			-- Recompute size every open, so reopening after close animates to full height again.
+			RecalculateListPosition()
+			RecalculateListSize(GetDropdownListHeight())
 			local TargetSize = ListOuter.Size
-			RecalculateListSize(1) -- Start from small height
+			RecalculateListSize(1)
 
 			ListOuter.Visible = true
 			Library.OpenedFrames[ListOuter] = true
