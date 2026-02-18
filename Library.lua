@@ -146,6 +146,11 @@ function Library:ShouldApplyCorner(Inst)
         return false;
     end;
 
+    -- Keep root backing frames (window outer/background shells) identical to upstream.
+    if Inst.Parent == ScreenGui and Inst:IsA('GuiObject') and Inst.BackgroundColor3 == Color3.new(0, 0, 0) then
+        return false;
+    end;
+
     if SkipRoundedNames[Inst.Name] then
         return false;
     end;
