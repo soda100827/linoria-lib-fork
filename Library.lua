@@ -1643,7 +1643,7 @@ do
 			})
 
 			Library:AddToRegistry(Outer, {
-				BorderColor3 = "Black",
+				BorderColor3 = "OutlineColor",
 			})
 
 			Library:AddToRegistry(Inner, {
@@ -1651,7 +1651,7 @@ do
 				BorderColor3 = "OutlineColor",
 			})
 
-			Library:OnHighlight(Outer, Outer, { BorderColor3 = "AccentColor" }, { BorderColor3 = "Black" })
+			Library:OnHighlight(Outer, Outer, { BorderColor3 = "AccentColor" }, { BorderColor3 = "OutlineColor" })
 
 			return Outer, Inner, Label
 		end
@@ -2410,6 +2410,7 @@ do
 			BackgroundColor3 = Color3.new(0, 0, 0),
 			BackgroundTransparency = 1,
 			BorderSizePixel = 0,
+			Active = true,
 			Size = UDim2.new(1, -4, 0, 20),
 			ZIndex = 5,
 			Parent = Container,
@@ -2424,12 +2425,13 @@ do
 		})
 
 		Library:AddToRegistry(DropdownOuter, {
-			BorderColor3 = "Black",
+			BorderColor3 = "OutlineColor",
 		})
 
 		local DropdownInner = Library:Create("Frame", {
 			BackgroundColor3 = Library.MainColor,
 			BorderSizePixel = 0,
+			Active = true,
 			Size = UDim2.new(1, 0, 1, 0),
 			ZIndex = 6,
 			Parent = DropdownOuter,
@@ -2662,44 +2664,44 @@ do
 					Library.RegistryMap[ButtonLabel].Properties.TextColor3 = Selected and "AccentColor" or "FontColor"
 				end
 
-				ButtonLabel.InputBegan:Connect(function(Input)
-					if Input.UserInputType == Enum.UserInputType.MouseButton1 then
-						local Try = not Selected
+					Button.InputBegan:Connect(function(Input)
+						if Input.UserInputType == Enum.UserInputType.MouseButton1 then
+							local Try = not Selected
 
-						if Dropdown:GetActiveValues() == 1 and not Try and not Info.AllowNull then
-						else
-							if Info.Multi then
-								Selected = Try
-
-								if Selected then
-									Dropdown.Value[Value] = true
-								else
-									Dropdown.Value[Value] = nil
-								end
+							if Dropdown:GetActiveValues() == 1 and not Try and not Info.AllowNull then
 							else
-								Selected = Try
+								if Info.Multi then
+									Selected = Try
 
-								if Selected then
-									Dropdown.Value = Value
+									if Selected then
+										Dropdown.Value[Value] = true
+									else
+										Dropdown.Value[Value] = nil
+									end
 								else
-									Dropdown.Value = nil
+									Selected = Try
+
+									if Selected then
+										Dropdown.Value = Value
+									else
+										Dropdown.Value = nil
+									end
+
+									for _, OtherButton in next, Buttons do
+										OtherButton:UpdateButton()
+									end
 								end
 
-								for _, OtherButton in next, Buttons do
-									OtherButton:UpdateButton()
-								end
+								Table:UpdateButton()
+								Dropdown:Display()
+
+								Library:SafeCallback(Dropdown.Callback, Dropdown.Value)
+								Library:SafeCallback(Dropdown.Changed, Dropdown.Value)
+
+								Library:AttemptSave()
 							end
-
-							Table:UpdateButton()
-							Dropdown:Display()
-
-							Library:SafeCallback(Dropdown.Callback, Dropdown.Value)
-							Library:SafeCallback(Dropdown.Changed, Dropdown.Value)
-
-							Library:AttemptSave()
 						end
-					end
-				end)
+					end)
 
 				Table:UpdateButton()
 				Dropdown:Display()
@@ -2774,7 +2776,7 @@ do
 			Library:SafeCallback(Dropdown.Changed, Dropdown.Value)
 		end
 
-		DropdownOuter.InputBegan:Connect(function(Input)
+		DropdownInner.InputBegan:Connect(function(Input)
 			if Input.UserInputType == Enum.UserInputType.MouseButton1 and not Library:MouseIsOverOpenedFrame() then
 				if ListOuter.Visible then
 					Dropdown:CloseDropdown()
@@ -2784,7 +2786,7 @@ do
 			end
 		end)
 
-		InputService.InputBegan:Connect(function(Input)
+		Library:GiveSignal(InputService.InputBegan:Connect(function(Input)
 			if Input.UserInputType == Enum.UserInputType.MouseButton1 then
 				local AbsPos, AbsSize = ListOuter.AbsolutePosition, ListOuter.AbsoluteSize
 
@@ -2797,7 +2799,7 @@ do
 					Dropdown:CloseDropdown()
 				end
 			end
-		end)
+		end))
 
 		Dropdown:BuildDropdownList()
 		Dropdown:Display()
@@ -3528,7 +3530,8 @@ function Library:CreateWindow(...)
 				BackgroundColor3 = Library.BackgroundColor,
 				BackgroundTransparency = 1,
 				BorderSizePixel = 0,
-				Size = UDim2.new(1, 0, 0, 507 + 2),
+				Position = UDim2.new(0, 1, 0, 0),
+				Size = UDim2.new(1, -2, 0, 507 + 2),
 				ZIndex = 2,
 				Parent = Info.Side == 1 and LeftSide or RightSide,
 			})
@@ -3606,7 +3609,7 @@ function Library:CreateWindow(...)
 					end
 				end
 
-				BoxOuter.Size = UDim2.new(1, 0, 0, 20 + Size + 2 + 2)
+				BoxOuter.Size = UDim2.new(1, -2, 0, 20 + Size + 2 + 2)
 			end
 
 			Groupbox.Container = Container
