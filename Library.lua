@@ -1643,7 +1643,7 @@ do
 			})
 
 			Library:AddToRegistry(Outer, {
-				BorderColor3 = "OutlineColor",
+				BorderColor3 = "Black",
 			})
 
 			Library:AddToRegistry(Inner, {
@@ -1651,7 +1651,7 @@ do
 				BorderColor3 = "OutlineColor",
 			})
 
-			Library:OnHighlight(Outer, Outer, { BorderColor3 = "AccentColor" }, { BorderColor3 = "OutlineColor" })
+			Library:OnHighlight(Outer, Outer, { BorderColor3 = "AccentColor" }, { BorderColor3 = "Black" })
 
 			return Outer, Inner, Label
 		end
@@ -2410,7 +2410,6 @@ do
 			BackgroundColor3 = Color3.new(0, 0, 0),
 			BackgroundTransparency = 1,
 			BorderSizePixel = 0,
-			Active = true,
 			Size = UDim2.new(1, -4, 0, 20),
 			ZIndex = 5,
 			Parent = Container,
@@ -2425,13 +2424,12 @@ do
 		})
 
 		Library:AddToRegistry(DropdownOuter, {
-			BorderColor3 = "OutlineColor",
+			BorderColor3 = "Black",
 		})
 
 		local DropdownInner = Library:Create("Frame", {
 			BackgroundColor3 = Library.MainColor,
 			BorderSizePixel = 0,
-			Active = true,
 			Size = UDim2.new(1, 0, 1, 0),
 			ZIndex = 6,
 			Parent = DropdownOuter,
@@ -2555,14 +2553,6 @@ do
 			ScrollBarImageColor3 = "AccentColor",
 		})
 
-		local function GetDropdownListHeight()
-			return math.clamp(Scrolling.CanvasSize.Y.Offset - 1, 0, MAX_DROPDOWN_ITEMS * 20) + 1
-		end
-
-		DropdownOuter:GetPropertyChangedSignal("AbsoluteSize"):Connect(function()
-			RecalculateListSize(GetDropdownListHeight())
-		end)
-
 		Library:Create("UIListLayout", {
 			Padding = UDim.new(0, 0),
 			FillDirection = Enum.FillDirection.Vertical,
@@ -2672,7 +2662,7 @@ do
 					Library.RegistryMap[ButtonLabel].Properties.TextColor3 = Selected and "AccentColor" or "FontColor"
 				end
 
-					Button.InputBegan:Connect(function(Input)
+					ButtonLabel.InputBegan:Connect(function(Input)
 						if Input.UserInputType == Enum.UserInputType.MouseButton1 then
 							local Try = not Selected
 
@@ -2732,11 +2722,8 @@ do
 		end
 
 		function Dropdown:OpenDropdown()
-			-- Recompute size every open, so reopening after close animates to full height again.
-			RecalculateListPosition()
-			RecalculateListSize(GetDropdownListHeight())
 			local TargetSize = ListOuter.Size
-			RecalculateListSize(1)
+			RecalculateListSize(1) -- Start from small height
 
 			ListOuter.Visible = true
 			Library.OpenedFrames[ListOuter] = true
@@ -2787,7 +2774,7 @@ do
 			Library:SafeCallback(Dropdown.Changed, Dropdown.Value)
 		end
 
-		DropdownInner.InputBegan:Connect(function(Input)
+		DropdownOuter.InputBegan:Connect(function(Input)
 			if Input.UserInputType == Enum.UserInputType.MouseButton1 and not Library:MouseIsOverOpenedFrame() then
 				if ListOuter.Visible then
 					Dropdown:CloseDropdown()
@@ -2797,7 +2784,7 @@ do
 			end
 		end)
 
-		Library:GiveSignal(InputService.InputBegan:Connect(function(Input)
+		InputService.InputBegan:Connect(function(Input)
 			if Input.UserInputType == Enum.UserInputType.MouseButton1 then
 				local AbsPos, AbsSize = ListOuter.AbsolutePosition, ListOuter.AbsoluteSize
 
@@ -2810,7 +2797,7 @@ do
 					Dropdown:CloseDropdown()
 				end
 			end
-		end))
+		end)
 
 		Dropdown:BuildDropdownList()
 		Dropdown:Display()
@@ -3541,8 +3528,7 @@ function Library:CreateWindow(...)
 				BackgroundColor3 = Library.BackgroundColor,
 				BackgroundTransparency = 1,
 				BorderSizePixel = 0,
-				Position = UDim2.new(0, 1, 0, 0),
-				Size = UDim2.new(1, -2, 0, 507 + 2),
+				Size = UDim2.new(1, 0, 0, 507 + 2),
 				ZIndex = 2,
 				Parent = Info.Side == 1 and LeftSide or RightSide,
 			})
@@ -3620,7 +3606,7 @@ function Library:CreateWindow(...)
 					end
 				end
 
-				BoxOuter.Size = UDim2.new(1, -2, 0, 20 + Size + 2 + 2)
+				BoxOuter.Size = UDim2.new(1, 0, 0, 20 + Size + 2 + 2)
 			end
 
 			Groupbox.Container = Container
