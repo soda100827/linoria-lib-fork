@@ -3096,6 +3096,7 @@ function Library:CreateWindow(...)
         BackgroundColor3 = Library.BackgroundColor;
         BorderColor3 = Color3.new(0, 0, 0);
         BorderMode = Enum.BorderMode.Inset;
+        BorderSizePixel = 0;
         Position = UDim2.new(0, 0, 0, 0);
         Size = UDim2.new(1, 0, 1, 0);
         ZIndex = 1;
@@ -3644,7 +3645,7 @@ function Library:CreateWindow(...)
             end);
         end;
 
-        for _, Desc in next, Outer:GetDescendants() do
+        local function ApplyFade(Desc)
             local Properties = {};
 
             if Desc:IsA('ImageLabel') then
@@ -3676,6 +3677,12 @@ function Library:CreateWindow(...)
 
                 TweenService:Create(Desc, TweenInfo.new(FadeTime, Enum.EasingStyle.Linear), { [Prop] = Toggled and Cache[Prop] or 1 }):Play();
             end;
+        end;
+
+        ApplyFade(Outer);
+
+        for _, Desc in next, Outer:GetDescendants() do
+            ApplyFade(Desc);
         end;
 
         task.wait(FadeTime);
