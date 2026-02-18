@@ -8,10 +8,11 @@ local TweenService = game:GetService("TweenService")
 local RenderStepped = RunService.RenderStepped
 local LocalPlayer = Players.LocalPlayer
 local Mouse = LocalPlayer:GetMouse()
+local CreateInstance = Instance.new
 
 local ProtectGui = protectgui or (syn and syn.protect_gui) or function() end
 
-local ScreenGui = Instance.new("ScreenGui")
+local ScreenGui = CreateInstance("ScreenGui")
 ProtectGui(ScreenGui)
 
 ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Global
@@ -226,7 +227,7 @@ end
 function Library:GetScaleObject(Inst)
 	local Scale = Inst:FindFirstChildOfClass("UIScale")
 	if not Scale then
-		Scale = Instance.new("UIScale")
+		Scale = CreateInstance("UIScale")
 		Scale.Scale = 1
 		Scale.Parent = Inst
 	end
@@ -295,7 +296,7 @@ function Library:ApplyCorner(Inst, Radius)
 
 	local Corner = Inst:FindFirstChildOfClass("UICorner")
 	if not Corner then
-		Corner = Instance.new("UICorner")
+		Corner = CreateInstance("UICorner")
 		Corner.Parent = Inst
 	end
 
@@ -306,7 +307,7 @@ function Library:Create(Class, Properties)
 	local _Instance = Class
 
 	if type(Class) == "string" then
-		_Instance = Instance.new(Class)
+		_Instance = CreateInstance(Class)
 	end
 
 	if type(Properties) == "table" then
@@ -1804,7 +1805,7 @@ do
 
 		local function InitEvents(Button)
 			local function WaitForEvent(event, timeout, validator)
-				local bindable = Instance.new("BindableEvent")
+				local bindable = CreateInstance("BindableEvent")
 				local connection = event:Once(function(...)
 					if type(validator) == "function" and validator(...) then
 						bindable:Fire(true)

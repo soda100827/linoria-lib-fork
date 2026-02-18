@@ -3,9 +3,17 @@
 
 local repo = 'https://raw.githubusercontent.com/violin-suzutsuki/LinoriaLib/main/'
 
-local Library = loadstring(game:HttpGet(repo .. 'Library.lua'))()
-local ThemeManager = loadstring(game:HttpGet(repo .. 'addons/ThemeManager.lua'))()
-local SaveManager = loadstring(game:HttpGet(repo .. 'addons/SaveManager.lua'))()
+local function loadModule(path)
+    if readfile and isfile and isfile(path) then
+        return loadstring(readfile(path))()
+    end
+
+    return loadstring(game:HttpGet(repo .. path))()
+end
+
+local Library = loadModule('Library.lua')
+local ThemeManager = loadModule('addons/ThemeManager.lua')
+local SaveManager = loadModule('addons/SaveManager.lua')
 
 local Window = Library:CreateWindow({
     -- Set Center to true if you want the menu to appear in the center
