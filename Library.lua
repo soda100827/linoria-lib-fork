@@ -41,8 +41,8 @@ local Library = {
 
     OpenedFrames = {};
     DependencyBoxes = {};
-    UseRoundedCorners = true;
-    CornerRadius = UDim.new(0, 6);
+    UseRoundedCorners = false;
+    CornerRadius = UDim.new(0, 8);
 
     Signals = {};
     ScreenGui = ScreenGui;
@@ -51,10 +51,9 @@ local Library = {
 local RoundedClasses = {
     Frame = true;
     ScrollingFrame = true;
-    ImageLabel = true;
-    TextButton = true;
-    TextBox = true;
 };
+
+local MinRoundedSize = 14;
 
 local SkipRoundedNames = {
     Highlight = true;
@@ -137,17 +136,12 @@ function Library:AttemptSave()
     end;
 end;
 
-function Library:ShouldApplyCorner(Inst)
-    if not Library.UseRoundedCorners then
+function Library:ShouldApplyCorner(Inst, Force)
+    if not Force and not Library.UseRoundedCorners then
         return false;
     end;
 
     if (not Inst) or (not RoundedClasses[Inst.ClassName]) then
-        return false;
-    end;
-
-    -- Keep root backing frames (window outer/background shells) identical to upstream.
-    if Inst.Parent == ScreenGui and Inst:IsA('GuiObject') and Inst.BackgroundColor3 == Color3.new(0, 0, 0) then
         return false;
     end;
 
@@ -160,19 +154,19 @@ function Library:ShouldApplyCorner(Inst)
     end;
 
     local Size = Inst.Size;
-    if Size.Y.Scale == 0 and Size.Y.Offset > 0 and Size.Y.Offset <= 2 then
+    if Size.Y.Scale == 0 and Size.Y.Offset > 0 and Size.Y.Offset <= MinRoundedSize then
         return false;
     end;
 
-    if Size.X.Scale == 0 and Size.X.Offset > 0 and Size.X.Offset <= 2 then
+    if Size.X.Scale == 0 and Size.X.Offset > 0 and Size.X.Offset <= MinRoundedSize then
         return false;
     end;
 
     return true;
 end;
 
-function Library:ApplyRoundedCorner(Inst)
-    if not Library:ShouldApplyCorner(Inst) then
+function Library:ApplyRoundedCorner(Inst, Force)
+    if not Library:ShouldApplyCorner(Inst, Force) then
         return;
     end;
 
@@ -187,18 +181,28 @@ end;
 
 function Library:Create(Class, Properties)
     local _Instance = Class;
+    local RoundCorners;
 
     if type(Class) == 'string' then
         _Instance = Instance.new(Class);
     end;
 
     if type(Properties) == 'table' then
+        RoundCorners = Properties.RoundCorners;
+        Properties.RoundCorners = nil;
+
         for Property, Value in next, Properties do
             _Instance[Property] = Value;
         end;
+
+        Properties.RoundCorners = RoundCorners;
     end;
 
-    Library:ApplyRoundedCorner(_Instance);
+    if RoundCorners == nil then
+        Library:ApplyRoundedCorner(_Instance);
+    elseif RoundCorners then
+        Library:ApplyRoundedCorner(_Instance, true);
+    end;
 
     return _Instance;
 end;
@@ -3032,13 +3036,18 @@ function Library:CreateWindow(...)
 
     local Outer = Library:Create('Frame', {
         AnchorPoint = Config.AnchorPoint,
-        BackgroundColor3 = Color3.new(0, 0, 0);
+        BackgroundColor3 = Library.AccentColor;
         BorderSizePixel = 0;
         Position = Config.Position,
         Size = Config.Size,
         Visible = false;
         ZIndex = 1;
+        RoundCorners = true;
         Parent = ScreenGui;
+    });
+
+    Library:AddToRegistry(Outer, {
+        BackgroundColor3 = 'AccentColor';
     });
 
     Library:MakeDraggable(Outer, 25);
@@ -3050,6 +3059,7 @@ function Library:CreateWindow(...)
         Position = UDim2.new(0, 1, 0, 1);
         Size = UDim2.new(1, -2, 1, -2);
         ZIndex = 1;
+        RoundCorners = true;
         Parent = Outer;
     });
 
@@ -3073,6 +3083,7 @@ function Library:CreateWindow(...)
         Position = UDim2.new(0, 8, 0, 25);
         Size = UDim2.new(1, -16, 1, -33);
         ZIndex = 1;
+        RoundCorners = true;
         Parent = Inner;
     });
 
@@ -3088,6 +3099,7 @@ function Library:CreateWindow(...)
         Position = UDim2.new(0, 0, 0, 0);
         Size = UDim2.new(1, 0, 1, 0);
         ZIndex = 1;
+        RoundCorners = true;
         Parent = MainSectionOuter;
     });
 
