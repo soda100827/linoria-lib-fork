@@ -223,12 +223,12 @@ function Library:SetProperty(Instance, Property, Value, TweenInfoOverride)
 	end)
 end
 
-function Library:GetScaleObject(Instance)
-	local Scale = Instance:FindFirstChildOfClass("UIScale")
+function Library:GetScaleObject(Inst)
+	local Scale = Inst:FindFirstChildOfClass("UIScale")
 	if not Scale then
 		Scale = Instance.new("UIScale")
 		Scale.Scale = 1
-		Scale.Parent = Instance
+		Scale.Parent = Inst
 	end
 
 	return Scale
@@ -288,18 +288,18 @@ function Library:GetCornerRadius(Instance)
 	return Library.CornerRadius
 end
 
-function Library:ApplyCorner(Instance, Radius)
-	if not Library:ShouldRoundInstance(Instance) then
+function Library:ApplyCorner(Inst, Radius)
+	if not Library:ShouldRoundInstance(Inst) then
 		return
 	end
 
-	local Corner = Instance:FindFirstChildOfClass("UICorner")
+	local Corner = Inst:FindFirstChildOfClass("UICorner")
 	if not Corner then
 		Corner = Instance.new("UICorner")
-		Corner.Parent = Instance
+		Corner.Parent = Inst
 	end
 
-	Corner.CornerRadius = Radius or Library:GetCornerRadius(Instance)
+	Corner.CornerRadius = Radius or Library:GetCornerRadius(Inst)
 end
 
 function Library:Create(Class, Properties)
